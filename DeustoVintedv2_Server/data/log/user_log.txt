@@ -1,0 +1,4 @@
+.
+[2026-05-15 15:32:41] LOGIN: El usuario con correo j.ozaeta@opendeusto.es ha accedido al sistema.
+[2026-05-15 15:33:03] NUEVO REGISTRO: Usuario 'jon' creado (Email: jon.ozaeta@opendeusto.es).
+[2026-05-15 15:33:19] LOGIN: El usuario con correo jon.ozaeta@opendeusto.es ha accedido al sistema.

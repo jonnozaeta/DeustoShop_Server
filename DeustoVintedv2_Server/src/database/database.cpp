@@ -11,7 +11,7 @@
 
 using namespace std;
 
-int comprobarUsuarioBD(sqlite3* db, char* usuario, char* pass) {							//Posiblemente Mal
+int comprobarUsuarioBD(sqlite3* db, char* usuario, char* pass) {
     sqlite3_stmt* stmt;
     const char* sql = "SELECT * FROM USUARIO WHERE CORREO = ? AND PASSWORD = ?;";
     int resultado = 0;
@@ -28,7 +28,7 @@ int comprobarUsuarioBD(sqlite3* db, char* usuario, char* pass) {							//Posible
     return resultado;
 }
 
-int registrarUsuarioBD(sqlite3* db, char* usuario, char* pass, char* nombre) {				//Mal
+int registrarUsuarioBD(sqlite3* db, char* usuario, char* pass, char* nombre) {
     sqlite3_stmt* stmt;
     const char* sql = "INSERT INTO Usuario (correo, password, nombre_us, valoracion_media) VALUES (?, ?, ?, ?);";
     int resultado = 0;

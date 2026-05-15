@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstring>
 #include "protocolo.h"
+#include "../logs/log.h"
 #include "../database/database.h"
 
 using namespace std;
@@ -9,7 +10,6 @@ ProtocoloServidor::ProtocoloServidor(SOCKET s, sqlite3* database) {
     this->comm_socket = s;
     this->db = database;
 
-    // Inicializamos los buffers a cero por seguridad
     memset(sendBuff, 0, 512);
     memset(recvBuff, 0, 512);
 }
@@ -62,40 +62,65 @@ void ProtocoloServidor::atenderCliente() {
 
 // --- IMPLEMENTACIÓN DE LOS MANEJADORES ---
 
+
 void ProtocoloServidor::atenderLogin() {
-    char* user = recibirDato();
-    char* pass = recibirDato();
+    char* paquete = recibirDato();
+    if (paquete == NULL) return;
 
-    int resultado = comprobarUsuarioBD(this->db, user, pass);
+    char* user = strtok(paquete, "|");
+    char* pass = strtok(NULL, "|");
 
-    if (resultado == 1) {
-        cout << "[SISTEMA] Login correcto: " << user << endl;
-        enviarRespuesta("OK");
+    if (user != NULL && pass != NULL) {
+        int resultado = comprobarUsuarioBD(this->db, user, pass);
+
+        if (resultado == 1) {
+            cout << "[SISTEMA] Login correcto: " << user << endl;
+
+            registrar_log_inicio_sesion(user);
+
+            enviarRespuesta("OK");
+        } else {
+            cout << "[SISTEMA] Login fallido para: " << user << endl;
+            enviarRespuesta("ERROR");
+        }
     } else {
-        cout << "[SISTEMA] Login fallido: " << user << endl;
+        cout << "[ERROR] Paquete de Login mal formado" << endl;
         enviarRespuesta("ERROR");
     }
+
+    delete[] paquete;
 }
 
 void ProtocoloServidor::atenderRegistro() {
-    char* correo = recibirDato();
-    char* pass = recibirDato();
-    char* nombre = recibirDato();
+    char* paquete = recibirDato();
+    if (paquete == NULL) return;
 
-    cout << "[DEBUG] Procesando registro para: " << correo << endl;
+    char* correo = strtok(paquete, "|");
+    char* pass = strtok(NULL, "|");
+    char* nombre = strtok(NULL, "|");
 
-    int resultado = registrarUsuarioBD(this->db, correo, pass, nombre);
+    if (correo != NULL && pass != NULL && nombre != NULL) {
+        cout << "[DEBUG] Registro - Correo: " << correo << " Nombre: " << nombre << endl;
 
-    if (resultado == 1) {
-        enviarRespuesta("OK");
+        int resultado = registrarUsuarioBD(this->db, correo, pass, nombre);
+
+        if (resultado == 1) {
+
+        	registrar_log_registro_usuario(correo, nombre);
+
+            enviarRespuesta("OK");
+        } else {
+            enviarRespuesta("ERROR");
+        }
     } else {
+        cout << "[ERROR] Paquete de Registro mal formado" << endl;
         enviarRespuesta("ERROR");
     }
 
-    delete[] correo;
-    delete[] pass;
-    delete[] nombre;
+    delete[] paquete;
 }
+
+//CREARLOGS PARA REGISTRAR EVENTOS IMPORTANTES
 
 void ProtocoloServidor::atenderSubirProducto(){
 
