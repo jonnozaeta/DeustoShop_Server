@@ -3,6 +3,7 @@
 #include "protocolo.h"
 #include "../logs/log.h"
 #include "../database/database.h"
+#include <string>
 
 using namespace std;
 
@@ -122,15 +123,79 @@ void ProtocoloServidor::atenderRegistro() {
 
 //CREARLOGS PARA REGISTRAR EVENTOS IMPORTANTES
 
-void ProtocoloServidor::atenderSubirProducto(){
+void ProtocoloServidor::atenderSubirProducto() {
+    char* paquete = recibirDato();
+    if (paquete == NULL || strlen(paquete) == 0) return;
 
-}
-void ProtocoloServidor::atenderEliminarProducto(){
+    char datos[512];
+    strcpy(datos, paquete);
 
-}
-void ProtocoloServidor::atenderModificarProducto(){
+    char* nombre = strtok(datos, "|");
+    char* desc = strtok(NULL, "|");
+    char* talla = strtok(NULL, "|");
+    char* sexo = strtok(NULL, "|");
+    char* precioStr = strtok(NULL, "|");
+    char* idUserStr = strtok(NULL, "|");
 
+    if (nombre && desc && talla && sexo && precioStr && idUserStr) {
+        int res = insertarProductoBD(this->db, nombre, desc, talla, sexo, atoi(precioStr), atoi(idUserStr));
+        if (res == 1) {
+            cout << "[SISTEMA] Producto creado: " << nombre << endl;
+            enviarRespuesta("OK");
+        } else {
+            enviarRespuesta("ERROR");
+        }
+    } else {
+        enviarRespuesta("ERROR");
+    }
 }
+
+void ProtocoloServidor::atenderEliminarProducto() {
+    char* paquete = recibirDato();
+    if (paquete == NULL || strlen(paquete) == 0) return;
+
+    int id_prod = atoi(paquete);
+
+    if (id_prod > 0) {
+        int res = eliminarProductoBD(this->db, id_prod);
+        if (res == 1) {
+            cout << "[SISTEMA] Producto eliminado ID: " << id_prod << endl;
+            enviarRespuesta("OK");
+        } else {
+            enviarRespuesta("ERROR");
+        }
+    } else {
+        enviarRespuesta("ERROR");
+    }
+}
+
+void ProtocoloServidor::atenderModificarProducto() {
+    char* paquete = recibirDato();
+    if (paquete == NULL || strlen(paquete) == 0) return;
+
+    char datos[512];
+    strcpy(datos, paquete);
+
+    char* idStr = strtok(datos, "|");
+    char* nombre = strtok(NULL, "|");
+    char* desc = strtok(NULL, "|");
+    char* talla = strtok(NULL, "|");
+    char* sexo = strtok(NULL, "|");
+    char* precioStr = strtok(NULL, "|");
+
+    if (idStr && nombre && desc && talla && sexo && precioStr) {
+        int res = modificarProductoBD(this->db, atoi(idStr), nombre, desc, talla, sexo, atoi(precioStr));
+        if (res == 1) {
+            cout << "[SISTEMA] Producto ID " << idStr << " modificado." << endl;
+            enviarRespuesta("OK");
+        } else {
+            enviarRespuesta("ERROR");
+        }
+    } else {
+        enviarRespuesta("ERROR");
+    }
+}
+
 void ProtocoloServidor::atenderComprar(){
 
 }

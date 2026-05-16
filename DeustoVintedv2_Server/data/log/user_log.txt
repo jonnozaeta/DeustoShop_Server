@@ -3,3 +3,18 @@
 [2026-05-15 15:33:03] NUEVO REGISTRO: Usuario 'jon' creado (Email: jon.ozaeta@opendeusto.es).
 [2026-05-15 15:33:19] LOGIN: El usuario con correo jon.ozaeta@opendeusto.es ha accedido al sistema.
 [2026-05-15 23:29:33] LOGIN: El usuario con correo j.ozaeta@opendeusto.es ha accedido al sistema.
+[2026-05-16 18:41:04] LOGIN: El usuario con correo j.ozaeta@opendeusto.es ha accedido al sistema.
+[2026-05-16 18:47:05] LOGIN: El usuario con correo j.ozaeta@opendeusto.es ha accedido al sistema.
+[2026-05-16 19:04:18] NUEVO REGISTRO: Usuario 'Iker' creado (Email: iker@opendeusto.es).
+[2026-05-16 19:17:20] LOGIN: El usuario con correo iker@opendeusto.es ha accedido al sistema.
+[2026-05-16 19:21:52] LOGIN: El usuario con correo iker@opendeusto.es ha accedido al sistema.
+[2026-05-16 19:26:15] LOGIN: El usuario con correo iker@opendeusto.es ha accedido al sistema.
+[2026-05-16 19:31:45] LOGIN: El usuario con correo iker@opendeusto.es ha accedido al sistema.
+[2026-05-16 19:35:35] LOGIN: El usuario con correo iker@opendeusto.es ha accedido al sistema.
+[2026-05-16 19:41:42] LOGIN: El usuario con correo iker@opendeusto.es ha accedido al sistema.
+[2026-05-16 19:46:42] LOGIN: El usuario con correo iker@opendeusto.es ha accedido al sistema.
+[2026-05-16 19:49:59] LOGIN: El usuario con correo iker@opendeusto.es ha accedido al sistema.
+[2026-05-16 20:01:54] LOGIN: El usuario con correo iker@opendeusto.es ha accedido al sistema.
+[2026-05-16 20:02:28] LOGIN: El usuario con correo iker@opendeusto.es ha accedido al sistema.
+[2026-05-16 20:08:26] LOGIN: El usuario con correo iker@opendeusto.es ha accedido al sistema.
+[2026-05-16 20:12:31] LOGIN: El usuario con correo iker@opendeusto.es ha accedido al sistema.
