@@ -106,3 +106,72 @@ int modificarProductoBD(sqlite3* db, int id_prod, const char* nombre, const char
 
     return (rc == SQLITE_DONE) ? 1 : 0;
 }
+
+int comprarProductoBD(sqlite3* db, int idProd, const char *correoUsuario){
+	sqlite3_stmt* stmt;
+	const char* sql = "INSERT INTO Ventas (precio_final, fecha_venta, id_usuario, id_pro) SELECT p.precio, datetime('now', 'localtime'), u.id_usuario, p.id_prod FROM Productos p, Usuario u WHERE p.id_prod = ? AND u.correo = ?;";
+
+	if(sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK){
+		cout << "[SQLITE] Error al hacer la compra: "<< sqlite3_errmsg(db) <<endl;
+		return 0;
+	}
+
+	sqlite3_bind_int(stmt, 1, idProd);
+	sqlite3_bind_text(stmt, 2, correoUsuario, -1, SQLITE_STATIC);
+	int rc = sqlite3_step(stmt);
+	sqlite3_finalize(stmt);
+
+	if(rc == SQLITE_DONE &&sqlite3_changes(db) > 0){
+		return 1;
+	} else{
+		return 0;
+	}
+}
+
+
+int venderProductoBD(sqlite3* db, int idProd, const char* correoVendedor, const char* correoComprador){
+	sqlite3_stmt* stmt;
+		const char* sql = "INSERT INTO Ventas (precio_final, fecha_venta, id_usuario, id_pro) SELECT p.precio, datetime('now', 'localtime'), comprador.id_usuario, p.id_prod FROM Productos p JOIN Usuario vendedor ON p.id_usuario = vendedor.id_usuario JOIN Usuario comprador ON comprador.correo = ? WHERE p.id_prod = ? AND vendedor.correo = ? AND NOT EXISTS (SELECT 1 FROM Ventas v WHERE v.id_pro = p.id_prod);";
+
+		if(sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK){
+			cout << "[SQLITE] Error al hacer la venta: "<< sqlite3_errmsg(db) <<endl;
+			return 0;
+		}
+
+		sqlite3_bind_text(stmt, 1, correoComprador, -1, SQLITE_STATIC);
+		sqlite3_bind_int(stmt, 2, idProd);
+		sqlite3_bind_text(stmt,3,correoVendedor,-1,SQLITE_STATIC);
+		int rc = sqlite3_step(stmt);
+		sqlite3_finalize(stmt);
+
+		if(rc == SQLITE_DONE &&sqlite3_changes(db)>0){
+			return 1;
+		}else{
+			return 0;
+		}
+}
+
+int obtenerPerfilBD(sqlite3* db, const char* correoUsuario, char* resultado){
+	sqlite3_stmt *stmt;
+	const char* sql = "SELECT id_usuario, nombre_us, correo, valoracion_media FROM Usuario WHERE correo = ?;";
+
+	if(sqlite3_prepare_v2(db, sql, -1,&stmt, NULL)!= SQLITE_OK){
+		cout <<"[SQLITE] Error al obtener el perfil: "<< sqlite3_errmsg(db) <<endl;
+		return 0;
+	}
+
+	sqlite3_bind_text(stmt,1,correoUsuario,-1,SQLITE_STATIC);
+
+	if(sqlite3_step(stmt) ==SQLITE_ROW){
+		int idUsuario = sqlite3_column_int(stmt,0);
+		const char *nombre =(const char*) sqlite3_column_text(stmt,1);
+		const char* correo = (const char*) sqlite3_column_text(stmt, 2);
+		int valoracion = sqlite3_column_int(stmt, 3);
+
+		sprintf(resultado,"ID usuario: %d\nNombre: %s\nCorreo: %s\nValoracion media: %d/5", idUsuario,nombre, correo, valoracion);
+		sqlite3_finalize(stmt);
+		return 1;
+	}
+	sqlite3_finalize(stmt);
+	return 0;
+}

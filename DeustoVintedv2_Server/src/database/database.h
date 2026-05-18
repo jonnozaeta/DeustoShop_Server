@@ -16,7 +16,9 @@ int registrarUsuarioBD(sqlite3* db, char* usuario, char* pass, char* nombre);
 int insertarProductoBD(sqlite3* db, const char* nombre, const char* descripcion, const char* talla, const char* sexo, int precio, int id_usuario);
 int eliminarProductoBD(sqlite3* db, int id_prod) ;
 int modificarProductoBD(sqlite3* db, int id_prod, const char* nombre, const char* desc, const char* talla, const char* sexo, int precio);
-
+int comprarProductoBD(sqlite3* db, int idProd, const char *correoUsuario);
+int venderProductoBD(sqlite3* db, int id_prod, const char* correoVendedor, const char* correoComprador);
+int obtenerPerfilBD(sqlite3* db, const char* correoUsuario, char* resultado);
 
 
 #endif /* SRC_DATABASE_DATABASE_H_ */
