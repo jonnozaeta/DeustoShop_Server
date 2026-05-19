@@ -16,7 +16,7 @@
 using namespace std;
 
 void registrar_log_inicio_sesion(const char* correo) {
-	ofstream archivo("C:\\Users\\iker.perez.dulce\\git\\DeustoShop_Server\\DeustoVintedv2_Server\\data\\log\\user_log.txt", ios::app);
+	ofstream archivo("data\\log\\user_log.txt", ios::app);
 
     if (archivo.is_open()) {
         time_t t = time(nullptr);
@@ -33,7 +33,7 @@ void registrar_log_inicio_sesion(const char* correo) {
 }
 
 void registrar_log_registro_usuario(const char* correo, const char* nombre) {
-	ofstream archivo("C:\\Users\\iker.perez.dulce\\git\\DeustoShop_Server\\DeustoVintedv2_Server\\data\\log\\user_log.txt", ios::app);
+	ofstream archivo("data\\log\\user_log.txt", ios::app);
 
     if (archivo.is_open()) {
         time_t t = time(nullptr);

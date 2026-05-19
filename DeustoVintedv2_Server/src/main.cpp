@@ -12,7 +12,7 @@ int main() {
 
     sqlite3* db;
     //CAMBIAR RUTA PARA EL CORRECTO FUNCIONAMIENTO
-    if (sqlite3_open("C:\\Users\\iker.perez.dulce\\git\\DeustoShop_Server\\DeustoVintedv2_Server\\data\\DataBase.db", &db) != SQLITE_OK) {
+    if (sqlite3_open("C:\\Users\\jon.ozaeta\\git\\DeustoVintedC\\DeustoVintedv2\\data\\DataBase.db", &db) != SQLITE_OK) {
         cout << "Error abriendo la base de datos" << endl;
         return -1;
     }
